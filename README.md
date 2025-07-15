@@ -43,17 +43,7 @@ Whether you’re prepping for exams or learning independently, FocusVerse suppor
 
 ## 🗂️ Folder Structure
 
-FocusVerse/
-├── ui/ → Composables
-├── viewModel/ → ViewModels
-├── repository/ → Data sources (Firebase, local)
-├── model/ → Data models (Video, Note, etc.)
-├── state/ → UI state holders
-├── api/ → YouTube & Quotes
-├── navigation/ → Navigation graph
-├── uifiles/ → Constants (e.g. API keys)
-├── utils/ → Helpers
-
+<pre><code>## 🗂️ Folder Structure FocusVerse/ ├── ui/ → Composables (screens & UI components) ├── viewModel/ → ViewModels for state & logic ├── repository/ → Firestore and local data sources ├── model/ → Data models (Video, Note, Pdf, etc.) ├── state/ → UI state classes ├── api/ → YouTube & ZenQuotes API integration ├── navigation/ → Navigation graph and routes ├── uifiles/ → Constants (e.g. API keys, app config) ├── utils/ → General-purpose helpers </code></pre>
 
 ---
 
