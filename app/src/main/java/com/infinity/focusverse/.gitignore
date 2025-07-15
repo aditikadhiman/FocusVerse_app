@@ -1,0 +1,24 @@
+# Android/Gradle files
+.gradle/
+.idea/
+*.iml
+local.properties
+
+# Build output
+/build/
+app/build/
+
+# Firebase config
+app/google-services.json
+
+# Keystore files
+*.jks
+*.keystore
+keystore.properties
+
+# OS files
+.DS_Store
+
+# Ignore Const.kt because it contains API keys
+app/src/main/java/com/infinity/focusverse/uifiles/const.kt
+

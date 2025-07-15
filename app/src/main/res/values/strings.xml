@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">FocusVerse</string>
+    <string name="Welcome">Welcome</string>
+    <string name="log_in">Log in</string>
+    <string name="sign_up">Sign Up</string>
+    <string name = "continue_with_google">Continue with Google</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="hide_password">Hide password</string>
+    <string name="show_password">Show password</string>
+    <string name="terms_and_conditions">By continuing you accept our Privacy Policy and Terms of Use</string>
+    <string name="terms_and_conditions_header">Terms of Use</string>
+    <string name="register">Register</string>
+    <string name="or">OR</string>
+    <string name="forgot_password">Forgot your password?</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="send_link">Send Link</string>
+    <string name="cancel">Cancel</string>
+    <string name="todays_focus">Today\'s Focus</string>
+    <string name="progress">Progress</string>
+
+    <string name="WEB_CLIENT_ID">964016768476-5k57600m79lqarq0nnhj9ditsi67i9jc.apps.googleusercontent.com</string>
+</resources>
