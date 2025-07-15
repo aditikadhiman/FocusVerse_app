@@ -43,7 +43,23 @@ Whether you’re prepping for exams or learning independently, FocusVerse suppor
 
 ## 🗂️ Folder Structure
 
-<pre><code>## 🗂️ Folder Structure FocusVerse/ ├── ui/ │ ├── components/ → Reusable UI components │ └── screens/ → Composable screens (Home, Section, AddItem) │ ├── viewModel/ → ViewModels (HomeViewModel, SectionViewModel, etc.) │ ├── repository/ │ ├── impl/ → FirebaseRepositoryImpl, etc. │ └── interfaces/ → Interfaces for abstraction │ ├── model/ → Data models (Video, Note, Pdf, FocusReference) │ ├── state/ → UI state classes and screen states │ ├── api/ → YouTube API, ZenQuotes API integration │ ├── navigation/ → Navigation graph and routes │ ├── uifiles/ → Constants, config, local `const.kt` │ ├── utils/ → Helper functions, formatters, extensions </code></pre>
+## 🗂️ Folder Structure
+
+- `FocusVerse/`
+  - `ui/`
+    - `components/` — Reusable UI components
+    - `screens/` — Composable screens like Home, Section, etc.
+  - `viewModel/` — Holds all ViewModels
+  - `repository/`
+    - `impl/` — Repository implementations (e.g., FirebaseRepositoryImpl)
+    - `interfaces/` — Abstract interfaces
+  - `model/` — Data classes like Video, Note, Pdf, FocusReference
+  - `state/` — UI state classes
+  - `api/` — YouTube API, ZenQuotes API integration
+  - `navigation/` — Navigation graph and screen routes
+  - `uifiles/` — Constants and config (e.g., `const.kt`)
+  - `utils/` — Helpers and utility functions
+
 
 ---
 
