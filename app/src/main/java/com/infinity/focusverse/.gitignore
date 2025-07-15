@@ -19,6 +19,7 @@ keystore.properties
 # OS files
 .DS_Store
 
-# Ignore Const.kt because it contains API keys
+# Ignore const.kt (contains sensitive API keys)
 app/src/main/java/com/infinity/focusverse/uifiles/const.kt
+
 

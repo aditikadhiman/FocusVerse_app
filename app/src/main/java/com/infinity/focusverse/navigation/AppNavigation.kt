@@ -21,18 +21,19 @@ fun AppNavigation(
     val auth = FirebaseAuth.getInstance()
     val startDestination = if (auth.currentUser != null) Screen.HomeScreen.route else Screen.Welcome.route
 
+
+
 //    val navController = rememberNavController();
-    NavHost(navController = navController,startDestination =startDestination){
-        composable(Screen.Welcome.route) { WelcomeScreen(navController,googleLauncher)}
-        composable(Screen.Login.route) { LoginScreen(navController)}
-        composable(Screen.SignUp.route) { SignUpScreen(navController = navController)}
-        composable(Screen.HomeScreen.route) { HomeScreen(navController = navController)}
+    NavHost(navController = navController,startDestination =startDestination) {
+        composable(Screen.Welcome.route) { WelcomeScreen(navController, googleLauncher) }
+        composable(Screen.Login.route) { LoginScreen(navController) }
+        composable(Screen.SignUp.route) { SignUpScreen(navController = navController) }
+        composable(Screen.HomeScreen.route) { HomeScreen(navController = navController) }
         composable(Screen.TermsAndConditions.route) {
             TermsAndConditionsScreen(onBack = { navController.popBackStack() })
         }
 
-//        composable(Screen.Section.route){ SectionScreen(navController = navController)}
-//        composable(Screen.Profile.route){ Profile(navController = navController)}
+        composable(Screen.Profile.route) { ProfileScreen(navController = navController) }
         composable(
             route = Screen.AddItem.route,
             arguments = listOf(
@@ -45,10 +46,21 @@ fun AppNavigation(
             )
         ) { backStackEntry ->
             val sectionId = backStackEntry.arguments?.getString("sectionId") ?: ""
-            val subSectionId = backStackEntry.arguments?.getString("subSectionId")
-            if (subSectionId != null) {
-                AddItemScreen(sectionId = sectionId, subSectionId = subSectionId)
-            }
+            val subSectionId = backStackEntry.arguments?.getString("subSectionId") ?: ""
+
+            // ✅ Always show AddItemScreen — pass null safely if needed
+            AddItemScreen(sectionId = sectionId, subSectionId = subSectionId)
         }
-    }
-}
+
+
+        composable(
+            route = Screen.Section.route,
+            arguments = listOf(navArgument("sectionId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val sectionId = backStackEntry.arguments?.getString("sectionId") ?: ""
+            SectionScreen(navController = navController,sectionId = sectionId)
+        }
+
+
+    }}
+

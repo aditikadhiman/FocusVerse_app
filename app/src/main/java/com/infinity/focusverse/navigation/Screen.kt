@@ -6,7 +6,10 @@ sealed class Screen(val route: String) {
     object SignUp : Screen("signup")
     object HomeScreen : Screen("home")
     object TermsAndConditions: Screen("terms_and_conditions")
-    object Section: Screen("section")
+
+    object Section : Screen("section/{sectionId}") {
+        fun createRoute(sectionId: String) = "section/$sectionId"
+    }
     object AddItem: Screen("add_item_screen?sectionId={sectionId}&subSectionId={subSectionId}") {
         fun passArgs(sectionId: String, subSectionId: String? = null): String {
             return "add_item_screen?sectionId=$sectionId&subSectionId=${subSectionId ?: ""}"

@@ -1,105 +1,173 @@
 package com.infinity.focusverse.Repository
 
-//
-//class SectionRepositoryImpl(
-//    private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
-//) : SectionRepository {
-//
-//    override suspend fun getSection(sectionId: String, userId: String): Section {
-//        val doc = firestore.collection("users")
-//            .document(userId)
-//            .collection("sections")
-//            .document(sectionId)
-//            .get().await()
-//
-//        return doc.toObject(Section::class.java)?.copy(section_id = doc.id)
-//            ?: throw Exception("Section not found")
-//    }
-//
-//    override suspend fun getVideos(sectionId: String, userId: String): List<VideoItem> {
-//        val snapshot = firestore.collection("users")
-//            .document(userId)
-//            .collection("sections")
-//            .document(sectionId)
-//            .collection("videos")
-//            .get().await()
-//
-//        return snapshot.documents.mapNotNull {
-//            it.toObject(VideoItem::class.java)?.copy(id = it.id)
-//        }
-//    }
-//
-//    override suspend fun getPdfs(sectionId: String, userId: String): List<PdfItem> {
-//        val snapshot = firestore.collection("users")
-//            .document(userId)
-//            .collection("sections")
-//            .document(sectionId)
-//            .collection("pdfs")
-//            .get().await()
-//
-//        return snapshot.documents.mapNotNull {
-//            it.toObject(PdfItem::class.java)?.copy(id = it.id)
-//        }
-//    }
-//
-//    override suspend fun getNotes(sectionId: String, userId: String): List<NoteItem> {
-//        val snapshot = firestore.collection("users")
-//            .document(userId)
-//            .collection("sections")
-//            .document(sectionId)
-//            .collection("notes")
-//            .get().await()
-//
-//        return snapshot.documents.mapNotNull {
-//            it.toObject(NoteItem::class.java)?.copy(id = it.id)
-//        }
-//    }
-//
-//    override suspend fun getSubsections(sectionId: String, userId: String): List<Subsection> {
-//        val subsectionSnapshot = firestore.collection("users")
-//            .document(userId)
-//            .collection("sections")
-//            .document(sectionId)
-//            .collection("subsections")
-//            .get().await()
-//
-//        return subsectionSnapshot.documents.mapNotNull { doc ->
-//            val subSectionId = doc.id
-//            val baseSubsection = doc.toObject(Subsection::class.java)?.copy(subSection_id = subSectionId)
-//
-//            baseSubsection?.let { subsection ->
-//                val videos = firestore.collection("users")
-//                    .document(userId)
-//                    .collection("sections")
-//                    .document(sectionId)
-//                    .collection("subsections")
-//                    .document(subSectionId)
-//                    .collection("videos")
-//                    .get().await()
-//                    .documents.mapNotNull { it.toObject(VideoItem::class.java)?.copy(id = it.id) }
-//
-//                val notes = firestore.collection("users")
-//                    .document(userId)
-//                    .collection("sections")
-//                    .document(sectionId)
-//                    .collection("subsections")
-//                    .document(subSectionId)
-//                    .collection("notes")
-//                    .get().await()
-//                    .documents.mapNotNull { it.toObject(NoteItem::class.java)?.copy(id = it.id) }
-//
-//                val pdfs = firestore.collection("users")
-//                    .document(userId)
-//                    .collection("sections")
-//                    .document(sectionId)
-//                    .collection("subsections")
-//                    .document(subSectionId)
-//                    .collection("pdfs")
-//                    .get().await()
-//                    .documents.mapNotNull { it.toObject(PdfItem::class.java)?.copy(id = it.id) }
-//
-//                subsection.copy(videos = videos, notes = notes, pdfs = pdfs)
-//            }
-//        }
-//    }
-//}
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.infinity.focusverse.model.*
+import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
+
+class SectionRepositoryImpl @Inject constructor(
+    private val firestore: FirebaseFirestore,
+    private val auth: FirebaseAuth
+) : SectionRepository {
+
+    private val userId: String
+        get() = auth.currentUser?.uid ?: throw Exception("User not authenticated")
+
+    // 🔹 SECTION
+    override suspend fun getSectionById(sectionId: String): Section? {
+        val snapshot = firestore.collection("users")
+            .document(userId)
+            .collection("sections")
+            .document(sectionId)
+            .get()
+            .await()
+        return snapshot.toObject(Section::class.java)
+    }
+
+    // 🔹 SUBSECTIONS
+    override suspend fun getAllSubSections(sectionId: String): List<Subsection> {
+        return firestore.collection("users")
+            .document(userId)
+            .collection("sections")
+            .document(sectionId)
+            .collection("subsections")
+            .get()
+            .await()
+            .toObjects(Subsection::class.java)
+    }
+
+    override suspend fun updateSubSectionName(sectionId: String, subSectionId: String, newName: String) {
+        firestore.collection("users")
+            .document(userId)
+            .collection("sections")
+            .document(sectionId)
+            .collection("subsections")
+            .document(subSectionId)
+            .update("subsectionName", newName)
+            .await()
+    }
+
+    override suspend fun deleteSubSection(sectionId: String, subSectionId: String) {
+        firestore.collection("users")
+            .document(userId)
+            .collection("sections")
+            .document(sectionId)
+            .collection("subsections")
+            .document(subSectionId)
+            .delete()
+            .await()
+    }
+
+    // 🔹 VIDEOS
+    override suspend fun getAllVideos(sectionId: String): List<VideoItem> {
+        return firestore.collection("users")
+            .document(userId)
+            .collection("sections")
+            .document(sectionId)
+            .collection("videos")
+            .get()
+            .await()
+            .toObjects(VideoItem::class.java)
+    }
+
+    override suspend fun updateVideo(videoItem: VideoItem) {
+        firestore.collection("users")
+            .document(userId)
+            .collection("sections")
+            .document(videoItem.sectionId)
+            .collection("videos")
+            .document(videoItem.id)
+            .set(videoItem)
+            .await()
+    }
+
+    override suspend fun deleteVideo(sectionId: String, videoId: String) {
+        firestore.collection("users")
+            .document(userId)
+            .collection("sections")
+            .document(sectionId)
+            .collection("videos")
+            .document(videoId)
+            .delete()
+            .await()
+    }
+
+    // 🔹 PDFS
+    override suspend fun getAllPdfs(sectionId: String): List<PdfItem> {
+        return firestore.collection("users")
+            .document(userId)
+            .collection("sections")
+            .document(sectionId)
+            .collection("pdfs")
+            .get()
+            .await()
+            .toObjects(PdfItem::class.java)
+    }
+
+    override suspend fun updatePdfTitle(sectionId: String, pdfId: String, newTitle: String) {
+        firestore.collection("users")
+            .document(userId)
+            .collection("sections")
+            .document(sectionId)
+            .collection("pdfs")
+            .document(pdfId)
+            .update("title", newTitle)
+            .await()
+    }
+
+    override suspend fun deletePdf(sectionId: String, pdfId: String) {
+        firestore.collection("users")
+            .document(userId)
+            .collection("sections")
+            .document(sectionId)
+            .collection("pdfs")
+            .document(pdfId)
+            .delete()
+            .await()
+    }
+
+    // 🔹 NOTES
+    override suspend fun getAllNotes(sectionId: String): List<NoteItem> {
+        return firestore.collection("users")
+            .document(userId)
+            .collection("sections")
+            .document(sectionId)
+            .collection("notes")
+            .get()
+            .await()
+            .toObjects(NoteItem::class.java)
+    }
+
+    override suspend fun updateNoteContent(sectionId: String, noteId: String, newContent: String) {
+        firestore.collection("users")
+            .document(userId)
+            .collection("sections")
+            .document(sectionId)
+            .collection("notes")
+            .document(noteId)
+            .update("content", newContent)
+            .await()
+    }
+
+    override suspend fun deleteNote(sectionId: String, noteId: String) {
+        firestore.collection("users")
+            .document(userId)
+            .collection("sections")
+            .document(sectionId)
+            .collection("notes")
+            .document(noteId)
+            .delete()
+            .await()
+    }
+
+    // 🔹 TODAY'S FOCUS
+    override suspend fun addToTodayFocus(focusReference: FocusReference) {
+        firestore.collection("users")
+            .document(userId)
+            .collection("focusItems")
+            .document(focusReference.itemId)
+            .set(focusReference)
+            .await()
+    }
+}

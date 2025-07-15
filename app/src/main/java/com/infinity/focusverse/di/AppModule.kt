@@ -55,11 +55,12 @@ object AppModule {
             .build()
             .create(YouTubeApiService::class.java)
 
-//    @Provides
-//    @Singleton
-//    fun provideSectionRepository(
-//        firestore: FirebaseFirestore
-//    ): SectionRepository = SectionRepositoryImpl(firestore)
+    @Provides
+    @Singleton
+    fun provideSectionRepository(
+        firestore: FirebaseFirestore,
+        auth: FirebaseAuth
+    ): SectionRepository = SectionRepositoryImpl(firestore,auth)
 
     @Provides
     @Singleton
