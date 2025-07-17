@@ -13,5 +13,6 @@
 .externalNativeBuild
 .cxx
 local.properties
+google-services.json
 # Ignore const.kt
 app/src/main/java/com/infinity/focusverse/uifiles/const.kt
