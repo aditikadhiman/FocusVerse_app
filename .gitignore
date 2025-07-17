@@ -13,4 +13,5 @@
 .externalNativeBuild
 .cxx
 local.properties
-const.kt
+# Ignore const.kt
+app/src/main/java/com/infinity/focusverse/uifiles/const.kt
