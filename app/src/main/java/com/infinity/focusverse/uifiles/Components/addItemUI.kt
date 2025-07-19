@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.infinity.focusverse.ui.theme.SectionBox
@@ -36,7 +37,7 @@ import com.infinity.focusverse.ui.theme.SectionBox
 //}
 
 @Composable
-fun ActionCard(icon: Int, text: String, onClick: () -> Unit) {
+fun ActionCard(icon: Painter, text: String, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -50,7 +51,7 @@ fun ActionCard(icon: Int, text: String, onClick: () -> Unit) {
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(start = 16.dp)
         ) {
-            Icon(painter = painterResource(id = icon),
+            Icon(painter = icon,
                 contentDescription = null,
                 tint = Color.White)
             Spacer(modifier = Modifier.width(16.dp))

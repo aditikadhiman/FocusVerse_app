@@ -10,6 +10,7 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.infinity.focusverse.R
@@ -36,16 +37,16 @@ fun AddItemScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            ActionCard(icon = R.drawable.ic_note, text = "Add Note") {
+            ActionCard(icon = painterResource(id = R.drawable.ic_note), text = "Add Note") {
                 viewModel.onEvent(AddItemEvent.ShowDialog(DialogType.ADD_NOTE))
             }
-            ActionCard(icon = R.drawable.ic_youtube, text = "Add YouTube Video") {
+            ActionCard(icon = painterResource(id = R.drawable.ic_youtube), text = "Add YouTube Video") {
                 viewModel.onEvent(AddItemEvent.ShowDialog(DialogType.ADD_VIDEO))
             }
-            ActionCard(icon = R.drawable.pdf_icon, text = "Add PDF") {
+            ActionCard(icon = painterResource(id = R.drawable.pdf_icon), text = "Add PDF") {
                 viewModel.onEvent(AddItemEvent.ShowDialog(DialogType.ADD_PDF))
             }
-            ActionCard(icon = R.drawable.ic_subsection, text = "Add Subsection") {
+            ActionCard(icon = painterResource(id = R.drawable.ic_subsection), text = "Add Subsection") {
                 viewModel.onEvent(AddItemEvent.ShowDialog(DialogType.ADD_SUBSECTION))
             }
         }
