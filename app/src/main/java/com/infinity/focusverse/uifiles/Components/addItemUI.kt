@@ -44,16 +44,13 @@ fun ActionCard(icon: Painter, text: String, onClick: () -> Unit) {
             .height(50.dp)
             .clickable { onClick() },
         backgroundColor = SectionBox,
-        shape = RoundedCornerShape(10.dp),
-        elevation = 6.dp
+        shape = RoundedCornerShape(10.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(start = 16.dp)
         ) {
-            Icon(painter = icon,
-                contentDescription = null,
-                tint = Color.White)
+            Icon(painter = icon, contentDescription = null,tint=Color.Unspecified)
             Spacer(modifier = Modifier.width(16.dp))
             Text(text = text, color = Color.White)
         }

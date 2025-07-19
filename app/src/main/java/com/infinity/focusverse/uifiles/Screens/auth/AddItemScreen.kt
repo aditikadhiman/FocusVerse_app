@@ -1,10 +1,7 @@
 // FILE: AddItemScreen.kt
 package com.infinity.focusverse.uifiles.screen
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
@@ -17,6 +14,7 @@ import com.infinity.focusverse.R
 import com.infinity.focusverse.state.AddItemEvent
 import com.infinity.focusverse.state.addItem.DialogType
 import com.infinity.focusverse.uifiles.Components.ActionCard
+import com.infinity.focusverse.uifiles.Components.Heading3
 import com.infinity.focusverse.uifiles.Components.InputDialogComponent
 import com.infinity.focusverse.viewModel.AddItemViewModel
 
@@ -34,9 +32,11 @@ fun AddItemScreen(
             modifier = Modifier
                 .padding(padding)
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            Spacer(modifier = Modifier.height(20.dp))
+            Heading3(value = "Add Item")
             ActionCard(icon = painterResource(id = R.drawable.ic_note), text = "Add Note") {
                 viewModel.onEvent(AddItemEvent.ShowDialog(DialogType.ADD_NOTE))
             }
