@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.infinity.focusverse.ui.theme.SectionBox
+import com.infinity.focusverse.ui.theme.TextColor
 
 //@Composable
 //fun AddItemScreen(
@@ -52,7 +53,7 @@ fun ActionCard(icon: Painter, text: String, onClick: () -> Unit) {
         ) {
             Icon(painter = icon, contentDescription = null,tint=Color.Unspecified)
             Spacer(modifier = Modifier.width(16.dp))
-            Text(text = text, color = Color.White)
+            Text(text = text, color = TextColor)
         }
     }
 }

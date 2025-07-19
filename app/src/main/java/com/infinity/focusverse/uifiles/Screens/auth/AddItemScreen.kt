@@ -13,6 +13,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.infinity.focusverse.R
 import com.infinity.focusverse.state.AddItemEvent
 import com.infinity.focusverse.state.addItem.DialogType
+import com.infinity.focusverse.ui.theme.background
 import com.infinity.focusverse.uifiles.Components.ActionCard
 import com.infinity.focusverse.uifiles.Components.Heading3
 import com.infinity.focusverse.uifiles.Components.InputDialogComponent
@@ -27,7 +28,8 @@ fun AddItemScreen(
     val dialogUiState = viewModel.uiState.collectAsState().value
     val scaffoldState = rememberScaffoldState()
 
-    Scaffold(scaffoldState = scaffoldState) { padding ->
+    Scaffold(scaffoldState = scaffoldState,
+    backgroundColor = background) { padding ->
         Column(
             modifier = Modifier
                 .padding(padding)
