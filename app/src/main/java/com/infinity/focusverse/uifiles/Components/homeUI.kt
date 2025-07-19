@@ -1,9 +1,7 @@
 package com.infinity.focusverse.uifiles.Components
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -107,7 +106,8 @@ fun ProgressComponent(value: String, value1: Int, value2: Int) {
         Box(
             modifier = Modifier
                 .width(350.dp)
-                .background(brush = gradientBrush,
+                .background(
+                    brush = gradientBrush,
                     shape = RoundedCornerShape(20.dp)
                 ), contentAlignment = Alignment.Center
         ) {
@@ -160,7 +160,7 @@ fun VideoComponent(
                         drawRect(brush = gradientBrush)
                     }
                 }
-                .padding(8.dp)
+                .padding(5.dp)
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 AsyncImage(
@@ -170,23 +170,31 @@ fun VideoComponent(
                         .build(),
                     contentDescription = "Youtube Thumbnail",
                     placeholder = placeholder,
+                    contentScale = ContentScale.FillBounds, // ✅ Makes image fill and crop to modifier size
                     error = errorImage,
                     modifier = Modifier
-                        .height(110.dp)
                         .width(145.dp)
+                        .height(100.dp)
                         .clip(RoundedCornerShape(5.dp))
                         .clickable { onThumbnailClick() }
                 )
-                Row(horizontalArrangement = Arrangement.SpaceEvenly) {
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Row() {
                     Column(
                         modifier = Modifier
-                            .width(135.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
+                            .width(125.dp),
+                        horizontalAlignment = Alignment.Start,
+                        verticalArrangement = Arrangement.spacedBy(5.dp)
                     ) {
-                        ExpandableText(
-                            text = videoItem.title,
-                            style = MaterialTheme.typography.h4.copy(fontSize = 10.sp)
-                        )
+                        Box(modifier = Modifier
+                            .heightIn(min = 20.dp, max = 45.dp)
+                            .verticalScroll(rememberScrollState())) {
+                            ExpandableText(
+                                text = videoItem.title,
+                                style = MaterialTheme.typography.h4.copy(fontSize = 10.sp)
+                            )
+                        }
                         Text(
                             text = videoItem.channel,
                             style = MaterialTheme.typography.h4.copy(fontSize = 10.sp)
@@ -196,7 +204,8 @@ fun VideoComponent(
                             style = MaterialTheme.typography.h4.copy(fontSize = 10.sp)
                         )
                     }
-                    Column {
+                    Column(horizontalAlignment = Alignment.Start,
+                        verticalArrangement = Arrangement.SpaceBetween) {
                         MenuComponent(
                             menuItems,
                             onMenuItemClick
@@ -290,7 +299,8 @@ fun PdfComponent(
 //                Spacer(modifier = Modifier.height(14.dp))
 
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(10.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
@@ -318,7 +328,7 @@ fun NoteComponent(
 ) {
     Card(
         modifier = Modifier
-            .width(73.dp)
+            .width(155.dp)
             .height(184.dp),
         shape = RoundedCornerShape(5.dp),
         elevation = 10.dp
@@ -343,8 +353,21 @@ fun NoteComponent(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.Top
                 ) {
+                    Box( modifier = Modifier
+                        .width(120.dp)
+                        .height(140.dp)
+                        .verticalScroll(rememberScrollState())) {
+                        ExpandableText(
+                            text = noteItem.title,
+                            collapsedMaxLines = 11,
+                            modifier = Modifier
+                                .clickable { onNoteClick() }
+                        )
+                    }
+
                     MenuComponent(
                         menuItems = menuItems,
                         onMenuItemClick = onMenuItemClick
@@ -352,13 +375,7 @@ fun NoteComponent(
                 }
 
                 // ✅ Title as clickable to open the note
-                ExpandableText(
-                    text = noteItem.title,
-                    collapsedMaxLines = 8,
-                    modifier = Modifier
-                        .clickable { onNoteClick() }
-                        .padding(horizontal = 4.dp)
-                )
+
 
                 // ✅ Custom Checkbox at the bottom
                 checkBox(
@@ -398,8 +415,9 @@ fun CustomProgressComponent(
                 modifier = Modifier
                     .fillMaxWidth(fraction = progress)
                     .fillMaxHeight()
-                    .background(brush = gradientBrush,
-                    shape = RoundedCornerShape(20.dp)
+                    .background(
+                        brush = gradientBrush,
+                        shape = RoundedCornerShape(20.dp)
                     )
             )
         }
@@ -560,21 +578,6 @@ fun SectionCardComponent(
         }
     }
 }
-
-@Composable
-fun AddSectionComponent(onClick: () -> Unit) {
-    FloatingActionButton(
-        onClick = onClick,
-        backgroundColor = Color(0xFF363AE4), // your gradient start color
-        contentColor = TextColor,
-        shape = RoundedCornerShape(50),
-        elevation = FloatingActionButtonDefaults.elevation(8.dp),
-        modifier = Modifier.size(56.dp) // medium circular size
-    ) {
-        Text("+", fontSize = 24.sp)
-    }
-}
-
 
 @Composable
 fun BottomBarComponent(

@@ -49,26 +49,91 @@ class AddItemRepositoryImpl @Inject constructor(
         videoRef.document(videoItem.id).set(videoItem).await()
     }
 
-    override suspend fun addPlaylist(playlistId: String, sectionId: String, subSectionId: String) {
-        val userId = auth.currentUser?.uid ?: throw Exception("User not authenticated")
-        val videos = youTubeApiHandler.fetchPlaylistVideos(playlistId)
-        val videoRef = getItemRef(userId, sectionId, subSectionId, "videos")
+//    override suspend fun addPlaylist(playlistId: String, sectionId: String, subSectionId: String) {
+//        val userId = auth.currentUser?.uid ?: throw Exception("User not authenticated")
+//        val videos = youTubeApiHandler.fetchPlaylistVideos(playlistId)
+//        val videoRef = getItemRef(userId, sectionId, subSectionId, "videos")
+//
+//        videos.forEach { videoData ->
+//            val videoItem = VideoItem(
+//                id = videoData.videoId,
+//                title = videoData.title,
+//                channel = videoData.channelName,
+//                duration = videoData.duration,
+//                thumbnailUrl = videoData.thumbnail,
+//                isCompleted = false,
+//                sectionId = sectionId,
+//                subSectionId = subSectionId,
+//                videoUrl = "https://www.youtube.com/watch?v=${videoData.videoId}"
+//            )
+//            videoRef.document(videoItem.id).set(videoItem).await()
+//        }
+//    }
+//override suspend fun addPlaylist(playlistId: String, sectionId: String, subSectionId: String) {
+//    val userId = auth.currentUser?.uid ?: throw Exception("User not authenticated")
+//    val videoRef = getItemRef(userId, sectionId, subSectionId, "videos")
+//
+//    var nextPageToken: String? = null
+//
+//    do {
+//        val response = youTubeApiHandler.fetchPlaylistVideos(playlistId, nextPageToken)
+//
+//        response.videos.forEach { videoData ->
+//            val videoItem = VideoItem(
+//                id = videoData.videoId,
+//                title = videoData.title,
+//                channel = videoData.channelName,
+//                duration = videoData.duration,
+//                thumbnailUrl = videoData.thumbnail,
+//                isCompleted = false,
+//                sectionId = sectionId,
+//                subSectionId = subSectionId,
+//                videoUrl = "https://www.youtube.com/watch?v=${videoData.videoId}"
+//            )
+//            videoRef.document(videoItem.id).set(videoItem).await()
+//        }
+//
+//        nextPageToken = response.nextPageToken
+//
+//    } while (nextPageToken != null)
+//}
+override suspend fun addPlaylist(
+    playlistId: String,
+    sectionId: String,
+    subSectionId: String
+) {
+    val userId = auth.currentUser?.uid ?: throw Exception("User not authenticated")
+    val videoRef = getItemRef(userId, sectionId, subSectionId, "videos")
 
-        videos.forEach { videoData ->
-            val videoItem = VideoItem(
-                id = videoData.videoId,
-                title = videoData.title,
-                channel = videoData.channelName,
-                duration = videoData.duration,
-                thumbnailUrl = videoData.thumbnail,
-                isCompleted = false,
-                sectionId = sectionId,
-                subSectionId = subSectionId,
-                videoUrl = "https://www.youtube.com/watch?v=${videoData.videoId}"
-            )
-            videoRef.document(videoItem.id).set(videoItem).await()
-        }
+    var nextPageToken: String? = null
+
+    try {
+        do {
+            val response = youTubeApiHandler.fetchPlaylistVideos(playlistId)
+
+            response.forEach { videoData ->
+                val videoItem = VideoItem(
+                    id = videoData.videoId,
+                    title = videoData.title,
+                    channel = videoData.channelName,
+                    duration = videoData.duration,
+                    thumbnailUrl = videoData.thumbnail,
+                    isCompleted = false,
+                    sectionId = sectionId,
+                    subSectionId = subSectionId,
+                    videoUrl = "https://www.youtube.com/watch?v=${videoData.videoId}"
+                )
+                videoRef.document(videoItem.id).set(videoItem).await()
+            }
+
+            nextPageToken = nextPageToken
+
+        } while (!nextPageToken.isNullOrEmpty())
+    } catch (e: Exception) {
+        // You can log or propagate the error as needed
+        throw Exception("Failed to fetch playlist: ${e.message}", e)
     }
+}
 
     private fun getItemRef(userId: String, sectionId: String, subSectionId: String, collection: String) =
         if (subSectionId.isEmpty()) {

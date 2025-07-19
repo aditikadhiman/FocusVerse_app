@@ -33,6 +33,7 @@ data class ContentDetails(
 
 // For playlist fetch
 data class YouTubePlaylistResponse(
+    val nextPageToken: String?, // Nullable
     val items: List<PlaylistItem>
 )
 
@@ -71,3 +72,4 @@ data class PlaylistContentDetails(
 //    }
 //  ]
 //}
+

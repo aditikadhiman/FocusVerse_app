@@ -1,8 +1,6 @@
 package com.infinity.focusverse.uifiles.Components
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -12,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -41,9 +40,9 @@ fun PdfComponent2(
 ) {
     Card(
         modifier = Modifier
-            .width(113.dp)
+            .width(132.dp)
             .height(128.dp),
-        shape = RoundedCornerShape(5.dp),
+        shape = RoundedCornerShape(10.dp),
         elevation = 10.dp
     ) {
         Box(
@@ -53,7 +52,7 @@ fun PdfComponent2(
                     color = SectionBox,
                     shape = RoundedCornerShape(10.dp)
                 )
-                .padding(8.dp)
+                .padding(10.dp)
         ) {
             Column(
                 modifier = Modifier.fillMaxSize(),
@@ -67,7 +66,7 @@ fun PdfComponent2(
                 ) {
                     Image(
                         modifier = Modifier
-                            .size(48.dp)
+                            .size(56.dp)
                             .clickable { onPdfClick() },
                         alignment = Alignment.Center, painter = image,
                         contentDescription = "pdf_icon"
@@ -77,14 +76,15 @@ fun PdfComponent2(
 
                     MenuComponent(menuItems = menuItems, onMenuItemClick = onMenuItemClick)
                 }
-//                Spacer(modifier = Modifier.height(14.dp))
 
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(5.dp),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    horizontalArrangement = Arrangement.SpaceAround
                 ) {
-                    ExpandableText(text = pdfItem.title)
+                    ExpandableText(text = pdfItem.title,          style = MaterialTheme.typography.h4.copy(fontSize = 12.sp))
                     Spacer(modifier = Modifier.width(43.dp))
                     checkBox(
                         checked = pdfItem.isCompleted,
@@ -121,11 +121,13 @@ fun VideoComponent2(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(10.dp)
+                .background(color = SectionBox)
         ) {
             Row(
-                modifier = Modifier.fillMaxSize(),
-                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(10.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 AsyncImage(
@@ -136,33 +138,43 @@ fun VideoComponent2(
                     contentDescription = "Youtube Thumbnail",
                     placeholder = placeholder,
                     error = errorImage,
+                    contentScale=ContentScale.FillBounds,
                     modifier = Modifier
-                        .height(110.dp)
-                        .width(85.dp)
-                        .clip(RoundedCornerShape(5.dp))
+                        .height(90.dp)
+                        .width(100.dp)
+                        .clip(RoundedCornerShape(10.dp))
                         .clickable { onThumbnailClick() }
                 )
+                
+                Spacer(modifier = Modifier.width(10.dp))
 
                 Column(
                     modifier = Modifier
                         .width(190.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(5.dp)
+                    horizontalAlignment = Alignment.Start,
+                    verticalArrangement = Arrangement.spacedBy(15.dp)
                 ) {
-                    ExpandableText(
-                        text = videoItem.title,
-                        style = MaterialTheme.typography.h4.copy(fontSize = 10.sp)
-                    )
+                    Box(
+                        modifier = Modifier
+                            .heightIn(min = 30.dp,max=45.dp)
+                            .verticalScroll(rememberScrollState())
+                    ) {
+                        ExpandableText(
+                            text = videoItem.title,
+                            style = MaterialTheme.typography.h4.copy(fontSize = 12.sp)
+                        )
+                    }
                     Text(
                         text = videoItem.channel,
-                        style = MaterialTheme.typography.h4.copy(fontSize = 10.sp)
+                        style = MaterialTheme.typography.h4.copy(fontSize = 12.sp)
                     )
                     Text(
                         text = videoItem.duration,
-                        style = MaterialTheme.typography.h4.copy(fontSize = 10.sp)
+                        style = MaterialTheme.typography.h4.copy(fontSize = 12.sp)
                     )
                 }
-                Column {
+                Column ( horizontalAlignment = Alignment.Start,
+                    verticalArrangement = Arrangement.spacedBy(20.dp)){
                     MenuComponent(
                         menuItems,
                         onMenuItemClick
@@ -193,40 +205,52 @@ fun NoteComponent2(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(70.dp)
-            .background(
-                color = SectionBox,
-                shape = RoundedCornerShape(10.dp)
-            )
+            .heightIn(128.dp), // ✅ Card is always fixed height
+        shape = RoundedCornerShape(10.dp),
+        backgroundColor = SectionBox
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(10.dp)
+                .background(color = SectionBox)
         ) {
             Row(
-                modifier = Modifier.fillMaxSize(),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                ExpandableText(text = noteItem.title,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(10.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Top
+            ) {
+                // ✅ Scrollable and expandable content within fixed card
+                Box(
                     modifier = Modifier
-                        .width(317.dp)
-                        .height(70.dp)
-                        .clickable { onNoteClick() },
-                    3)
+                        .width(260.dp)
+                        .fillMaxHeight()
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    ExpandableText(
+                        text = noteItem.title,
+                        collapsedMaxLines = 6,
+                        style = MaterialTheme.typography.h4.copy(fontSize = 12.sp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { onNoteClick() }
+                    )
+                }
 
-                Column {
+                // ✅ Menu + Checkbox on right
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(20.dp)
+                ) {
                     MenuComponent(
-                        menuItems,
-                        onMenuItemClick
+                        menuItems = menuItems,
+                        onMenuItemClick = onMenuItemClick
                     )
                     checkBox(
                         checked = noteItem.isCompleted,
                         onCheckedChange = {
                             onCheckedChange(noteItem.copy(isCompleted = it))
-                            //“Make a new VideoItem that has all the same values,
-                            // except isCompleted, which should be set to it (true or false).”
                         }
                     )
                 }
@@ -234,6 +258,7 @@ fun NoteComponent2(
         }
     }
 }
+
 
 @Composable
 fun AddButtonComponent(

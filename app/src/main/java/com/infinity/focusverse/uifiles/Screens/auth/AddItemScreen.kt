@@ -58,7 +58,7 @@ fun AddItemScreen(
         InputDialogComponent(
             dialogTitle = when (dialogUiState.dialogType) {
                 DialogType.ADD_NOTE -> "Add Note"
-                DialogType.ADD_VIDEO -> "Add YouTube Video (ID or Playlist ID)"
+                DialogType.ADD_VIDEO -> "Add YouTube Video (URL or Playlist URL)"
                 DialogType.ADD_PDF -> "Add PDF (URL)"
                 DialogType.ADD_SUBSECTION -> "Add Subsection"
                 else -> ""
