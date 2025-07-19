@@ -1,14 +1,17 @@
 <h1 align="center">📚 FocusVerse</h1>
 <p align="center">
-A modern Android app for focused, structured learning — built with Jetpack Compose and Firebase.
+<!-- A modern Android app for focused, structured learning — built with Jetpack Compose and Firebase. -->
+  A mindful learning and digital clarity tracker — built with Jetpack Compose and Firebase.
 </p>
 
 ---
 
 ## 🧩 Overview
+FocusVerse tackles a key mental wellness challenge — digital clutter and scattered focus — especially for students and young professionals.
 
-**FocusVerse** is a productivity-first Android app designed to help learners organize their educational content — including YouTube videos, notes, and PDFs — into meaningful, structured sections.
+Unlike typical wellness tools, it helps users organize both productive and distracting content (videos, notes, workouts, PDFs, even entertainment) into focused sections.
 
+By encouraging clarity, reducing cognitive load, and promoting intentional digital use, FocusVerse supports sustained attention and real mental balance in an overwhelming digital world.
 Whether you’re prepping for exams or learning independently, FocusVerse supports your flow with intuitive UI and real-time cloud sync.
 
 ---
