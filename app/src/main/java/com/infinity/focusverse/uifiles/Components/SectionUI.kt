@@ -205,7 +205,7 @@ fun NoteComponent2(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(128.dp), // ✅ Card is always fixed height
+            .heightIn(max=128.dp), // ✅ Card is always fixed height
         shape = RoundedCornerShape(10.dp),
         backgroundColor = SectionBox
     ) {
@@ -224,7 +224,7 @@ fun NoteComponent2(
                 // ✅ Scrollable and expandable content within fixed card
                 Box(
                     modifier = Modifier
-                        .width(260.dp)
+                        .width(120.dp)
                         .fillMaxHeight()
                         .verticalScroll(rememberScrollState())
                 ) {

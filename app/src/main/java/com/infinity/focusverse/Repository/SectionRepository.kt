@@ -29,4 +29,9 @@ interface SectionRepository {
 
     // 🔹 Add to Today's Focus (focusItems)
     suspend fun addToTodayFocus(focusReference: FocusReference)
+
+    suspend fun updateNoteCompletion(sectionId: String, noteId: String, isCompleted: Boolean)
+    suspend fun updateVideoCompletion(sectionId: String, videoId: String, isCompleted: Boolean)
+    suspend fun updatePdfCompletion(sectionId: String, pdfId: String, isCompleted: Boolean)
+
 }

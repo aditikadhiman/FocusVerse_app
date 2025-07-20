@@ -672,8 +672,8 @@ fun checkBox(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
             .width(20.dp)
             .height(20.dp),
         colors = CheckboxDefaults.colors(
-            checkedColor = Color.Transparent,
-            checkmarkColor = PrimaryButton,
+            checkedColor =Color.Transparent,
+            checkmarkColor = TextColor,
             uncheckedColor = TextColor,
             disabledColor = Color.Transparent
         ), checked = checked,

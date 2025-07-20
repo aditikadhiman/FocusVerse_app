@@ -1,13 +1,19 @@
 package com.infinity.focusverse.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
 import com.infinity.focusverse.Repository.SectionRepository
 import com.infinity.focusverse.model.FocusReference
+import com.infinity.focusverse.model.NoteItem
+import com.infinity.focusverse.model.PdfItem
+import com.infinity.focusverse.model.VideoItem
 import com.infinity.focusverse.state.SectionUiState
 import com.infinity.focusverse.state.addItem.DialogType
 import com.infinity.focusverse.state.addItem.DialogUiEvent
 import com.infinity.focusverse.state.addItem.DialogUiState
+import com.infinity.focusverse.utils.FirebaseUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -178,4 +184,65 @@ class SectionViewModel @Inject constructor(
             repository.addToTodayFocus(reference)
         }
     }
+
+
+    fun toggleVideoCompletion(sectionId: String, video: VideoItem) {
+        val newValue = !video.isCompleted
+        viewModelScope.launch {
+            repository.updateVideoCompletion(sectionId, video.id, newValue)
+            updateVideoCompletionLocally(video.id, newValue)
+        }
+    }
+
+    private fun updateVideoCompletionLocally(videoId: String, isCompleted: Boolean) {
+        _uiState.update { current ->
+            current.copy(
+                videos = current.videos.map {
+                    if (it.id == videoId) it.copy(isCompleted = isCompleted) else it
+                }
+            )
+        }
+    }
+
+    fun togglePdfCompletion(sectionId: String, pdf: PdfItem) {
+        val newValue = !pdf.isCompleted
+        viewModelScope.launch {
+            repository.updatePdfCompletion(sectionId, pdf.id, newValue)
+            updatePdfCompletionLocally(pdf.id, newValue)
+        }
+    }
+
+    private fun updatePdfCompletionLocally(pdfId: String, isCompleted: Boolean) {
+        _uiState.update { current ->
+            current.copy(
+                pdfs = current.pdfs.map {
+                    if (it.id == pdfId) it.copy(isCompleted = isCompleted) else it
+                }
+            )
+        }
+    }
+
+    fun toggleNoteCompletion(sectionId: String, note: NoteItem) {
+        val newValue = !note.isCompleted
+        viewModelScope.launch {
+            try {
+                repository.updateNoteCompletion(sectionId, note.id, newValue)
+                updateNoteCompletionLocally(note.id, newValue)
+            } catch (e: Exception) {
+                // Optional: Handle error or show a snackbar
+            }
+        }
+    }
+
+
+    private fun updateNoteCompletionLocally(noteId: String, isCompleted: Boolean) {
+        _uiState.update { current ->
+            current.copy(
+                notes = current.notes.map {
+                    if (it.id == noteId) it.copy(isCompleted = isCompleted) else it
+                }
+            )
+        }
+    }
+
 }

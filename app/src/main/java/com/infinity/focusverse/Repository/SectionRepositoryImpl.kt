@@ -170,4 +170,62 @@ class SectionRepositoryImpl @Inject constructor(
             .set(focusReference)
             .await()
     }
+
+//    override suspend fun updateNoteCompletion(sectionId: String, noteId: String, isCompleted: Boolean) {
+//        firestore.collection("users")
+//            .document(userId)
+//            .collection("sections")
+//            .document(sectionId)
+//            .collection("notes")
+//            .document(noteId)
+//            .update("isCompleted", isCompleted)
+//            .await()
+//    }
+
+//    override suspend fun updateVideoCompletion(sectionId: String, videoId: String, isCompleted: Boolean) {
+//        firestore.collection("users")
+//            .document(userId)
+//            .collection("sections")
+//            .document(sectionId)
+//            .collection("videos")
+//            .document(videoId)
+//            .update("isCompleted", isCompleted)
+//            .await()
+//    }
+
+//    override suspend fun updatePdfCompletion(sectionId: String, pdfId: String, isCompleted: Boolean) {
+//        firestore.collection("users")
+//            .document(userId)
+//            .collection("sections")
+//            .document(sectionId)
+//            .collection("pdfs")
+//            .document(pdfId)
+//            .update("isCompleted", isCompleted)
+//            .await()
+//    }
+    override suspend fun updateVideoCompletion(sectionId: String, videoId: String, isCompleted: Boolean) {
+        firestore.collection("sections")
+            .document(sectionId)
+            .collection("videos")
+            .document(videoId)
+            .update("isCompleted", isCompleted)
+    }
+
+    override suspend fun updatePdfCompletion(sectionId: String, pdfId: String, isCompleted: Boolean) {
+        firestore.collection("sections")
+            .document(sectionId)
+            .collection("pdfs")
+            .document(pdfId)
+            .update("isCompleted", isCompleted)
+    }
+
+    override suspend fun updateNoteCompletion(sectionId: String, noteId: String, isCompleted: Boolean) {
+        firestore.collection("sections")
+            .document(sectionId)
+            .collection("notes")
+            .document(noteId)
+            .update("isCompleted", isCompleted)
+    }
+
+    // Your existing getSectionData(), etc.
 }

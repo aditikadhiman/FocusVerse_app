@@ -9,10 +9,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 object FirebaseUtils {
 
-    private val auth: FirebaseAuth
+    val auth: FirebaseAuth
         get() = FirebaseAuth.getInstance()
 
-    private val firestore: FirebaseFirestore
+    val firestore: FirebaseFirestore
         get() = FirebaseFirestore.getInstance()
 
     fun getCurrentUser(): FirebaseUser? = auth.currentUser

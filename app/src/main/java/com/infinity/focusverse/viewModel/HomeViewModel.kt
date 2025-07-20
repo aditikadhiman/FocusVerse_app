@@ -59,7 +59,7 @@ class HomeViewModel @Inject constructor(
     fun onHomeEvent(event: HomeUiEvent) {
         when (event) {
             is HomeUiEvent.LoadInitialData -> loadInitialData()
-//            is HomeUiEvent.RefreshFocusItems -> fetchFocusItems()
+            is HomeUiEvent.RefreshFocusItems -> fetchFocusItems()
             is HomeUiEvent.RefreshSections -> fetchSections()
             is HomeUiEvent.ShowError -> _uiState.update { it.copy(errorMessage = event.message) }
             else -> {}
@@ -150,11 +150,50 @@ class HomeViewModel @Inject constructor(
     }
 
     // -----------------------------------------------------
-    // --- FIRESTORE LOGIC (Focus Items) ---
+//    // --- FIRESTORE LOGIC (Focus Items) ---
+//    fun updateFocusItem(item: FocusReference) {
+//        viewModelScope.launch {
+//            repository.updateFocusItem(item)
+//            fetchFocusItems()
+//        }
+//    }
+
     fun updateFocusItem(item: FocusReference) {
         viewModelScope.launch {
-            repository.updateFocusItem(item)
-            fetchFocusItems()
+            try {
+                // 1. Update Firestore
+                repository.updateFocusItem(item)
+
+                // 2. Update in-memory UI list to trigger recomposition
+                _focusUiItems.update { currentList ->
+                    currentList.map { uiItem ->
+                        when (uiItem) {
+                            is FocusUiItem.Note -> {
+                                if (uiItem.item.id == item.itemId) {
+                                    uiItem.copy(item = uiItem.item.copy(isCompleted = item.isCompleted))
+                                } else uiItem
+                            }
+
+                            is FocusUiItem.Pdf -> {
+                                if (uiItem.item.id == item.itemId) {
+                                    uiItem.copy(item = uiItem.item.copy(isCompleted = item.isCompleted))
+                                } else uiItem
+                            }
+
+                            is FocusUiItem.Video -> {
+                                if (uiItem.item.id == item.itemId) {
+                                    uiItem.copy(item = uiItem.item.copy(isCompleted = item.isCompleted))
+                                } else uiItem
+                            }
+                        }
+                    }
+                }
+
+            } catch (e: Exception) {
+                _uiState.update {
+                    it.copy(errorMessage = "Update failed: ${e.message}")
+                }
+            }
         }
     }
 
